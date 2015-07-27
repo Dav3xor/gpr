@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+
 from record_processing import sort_records, load_file
 
 """
@@ -23,16 +24,19 @@ module and be done with it.
 
 Simplicity -- take a look at the tests, there are a few compromises
 made for simplicity.  If an exception is raised, I don't catch it
-and let Python display the task trace.  I'm assuming a technically
+and let Python display the stack trace.  I'm assuming a technically
 proficient user who can figure out what's going on.  If the data
 is mismatched with the column definitions, it silently loads the
 records, and either drops a column, or ignores extra ones.
+
+Style -- Mostly pep8, although I like to put spaces after = to
+line up related assignments.
 
 Tests -- I think the tests are reasonably complete, given the size
 of the dataset.  
 
 Compact code is cool, but it can be difficult to read and 
-maintain.  I strived for brevity, but try to keep it readable.
+maintain.  I strive for brevity, but try to keep it readable.
 If I do too much on one line, I pull it apart.  I have
 a tendency to make variables that may only be used once to
 improve readability -- it sometimes makes my code look simple,
@@ -70,9 +74,9 @@ arguments = {'--filter':  { 'help': 'show a subset of books, ' + \
              '--reverse': { 'help': 'reverse sort', 
                             'action': 'store_true' } }
 
-description="Show a list of books, alphabetical ascending by author's " + \
-            "last name"
-parser = argparse.ArgumentParser(description)
+description = "Show a list of books, alphabetical ascending by author's " + \
+              "last name"
+parser      = argparse.ArgumentParser(description)
 
 for argument, options in arguments.iteritems():
     parser.add_argument(argument, **options)
