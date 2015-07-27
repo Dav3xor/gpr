@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 from record_processing import sort_records, load_file
 
@@ -45,6 +47,7 @@ def print_records(records):
     """print a list of book records."""
     for record in records:
         print "%(last)s, %(first)s, %(title)s, %(pubdate)s" % record
+
 
 # keep all the file info in one place, where it's easy to add
 # another file if you want.

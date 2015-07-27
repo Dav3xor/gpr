@@ -12,6 +12,7 @@ def sort_records(records, field, descending=False):
     """
     records.sort(key=lambda x:x[field], reverse=descending)
 
+
 def load_file(filename, delimiter, fields, filter=None):
     """ Load a list of records.
 
