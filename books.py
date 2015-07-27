@@ -38,8 +38,6 @@ records = []
 for file in files:
   records += load_file(*file, filter=args.filter) 
 
-print_records(records)
-print "---"
 sort_records(records, sort_key, reverse_sort)
 print_records(records)
   
