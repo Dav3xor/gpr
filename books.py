@@ -1,45 +1,45 @@
 import argparse
-
-arguments = {'--filter':  { 'help': 'string to find', 
-                            'type': str },
-             '--year':    { 'help': 'sort by year, ascending' },
-             '--reverse': { 'help': 'reverse sort order' } }
-              
+from record_processing import sort_records, load_file
 
 
+def print_records(records):
+  """print a list of book records."""
+  for record in records:
+    print "%(last)s, %(first)s, %(title)s, %(pubdate)s" % record
 
+# keep all the file info in one place, where it's easy to add
+# another file if you want.
 files = [ ['slash', '/', ['pubdate','first','last','title']],
           ['csv',   ',', ['title','last','first','pubdate']],
           ['pipe',  '|', ['first','last','title','pubdate']] ]
 
 
-def load_file(filename, delimiter, fields):
-  def do_split(line):
-    return (field.strip() for field in line.split(delimiter))
-
-  # I hope this isn't too code-golf-y
-  with open(filename, 'r') as infile:
-    return [ dict(zip(fields, do_split(line))) for line in infile]
 
 
-def print_records(records):
-  for record in records:
-    print "%(last)s, %(first)s, %(title)s, %(pubdate)s" % record
+arguments = {'--filter':  { 'help': 'show a subset of books, looks for the argument as a substring of any of the fields', 
+                            'type': str },
+             '--year':    { 'help': 'sort the books by year, ascending instead of default sort',
+                            'action': 'store_true' },
+             '--reverse': { 'help': 'reverse sort', 
+                            'action': 'store_true' } }
+              
 
+parser = argparse.ArgumentParser(description="Show a list of books, alphabetical ascending by author's last name")
+for argument, options in arguments.iteritems():
+  parser.add_argument(argument, **options)
+args = parser.parse_args()
 
-# using the list sort method, but sorted might be a better choice,
-# depending on what you're doing. sorted has more of the FP nature.
-def sort_records(records, field, descending=False):
-  records.sort(key=lambda x:x['last'], reverse=descending)
+sort_key     = 'pubdate'        if args.year    else 'last'
+reverse_sort = True             if args.reverse else False
 
 
 
 records = []
 for file in files:
-  records += load_file(*file) 
+  records += load_file(*file, filter=args.filter) 
 
 print_records(records)
 print "---"
-sort_records(records, 'last')
+sort_records(records, sort_key, reverse_sort)
 print_records(records)
   
